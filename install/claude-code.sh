@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
 # plaindev installer for Claude Code.
 #
-# Default: registers the skill globally.
-#   ~/.claude/skills/plaindev/SKILL.md
-#   Claude Code auto-discovers it via description and applies when relevant.
+# Default: registers both skills globally.
+#   ~/.claude/skills/plaindev/reply/SKILL.md
+#   ~/.claude/skills/plaindev/check/SKILL.md
+#   Claude Code auto-discovers them via description and applies when relevant.
 #
-# With --always-on: also injects a plaindev block into AGENTS.md in the current repo.
+# With --always-on: also injects a plaindev block into AGENTS.md and copies both skills locally.
 #   ./AGENTS.md   (block fenced with <!-- plaindev-begin --> ... <!-- plaindev-end -->)
-#   Claude Code reads AGENTS.md into every conversation, so plaindev is active by default.
+#   ./.claude/skills/plaindev/reply/SKILL.md
+#   ./.claude/skills/plaindev/check/SKILL.md
 #
 # Flags:
-#   --always-on    Make plaindev always active in the current repo (auto-loaded via AGENTS.md).
-#   --uninstall    Remove installed files and (if --always-on) strip the AGENTS.md block.
+#   --always-on    Make plaindev reply always active in the current repo (auto-loaded via AGENTS.md).
+#   --uninstall    Remove global skills only. Does not touch this repo.
 #   -h, --help     Show this help.
 
 set -euo pipefail
@@ -20,7 +22,7 @@ REPO_URL="https://github.com/gopaz/plaindev.git"
 SELF_REL="install/claude-code.sh"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-}")" 2>/dev/null && pwd)" || SCRIPT_DIR=""
-if [[ -z "$SCRIPT_DIR" ]] || [[ ! -f "$SCRIPT_DIR/../skills/plaindev/SKILL.md" ]]; then
+if [[ -z "$SCRIPT_DIR" ]] || [[ ! -f "$SCRIPT_DIR/../skills/plaindev/reply/SKILL.md" ]]; then
   command -v git >/dev/null 2>&1 || { echo "plaindev: git is required for the remote install. install git and retry." >&2; exit 1; }
   TMP="$(mktemp -d -t plaindev.XXXXXX)"
   echo "plaindev: fetching repo into $TMP..."
@@ -32,16 +34,19 @@ if [[ -z "$SCRIPT_DIR" ]] || [[ ! -f "$SCRIPT_DIR/../skills/plaindev/SKILL.md" ]
 fi
 
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-SKILL_SRC="$REPO_ROOT/skills/plaindev/SKILL.md"
+# shellcheck source=lib.sh
+source "$SCRIPT_DIR/lib.sh"
+
 AGENTS_SRC="$REPO_ROOT/AGENTS.md"
 
-USER_DEST="$HOME/.claude/skills/plaindev/SKILL.md"
+GLOBAL_DEST="$HOME/.claude/skills/plaindev"
+LOCAL_DEST="$PWD/.claude/skills/plaindev"
 REPO_AGENTS="$PWD/AGENTS.md"
 
 ALWAYS_ON=0
 UNINSTALL=0
 
-usage() { sed -n '2,16p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,18p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -52,7 +57,13 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-[[ ! -f "$SKILL_SRC" ]] && { echo "claude-code.sh: skill not found at $SKILL_SRC" >&2; exit 1; }
+if [[ $UNINSTALL -eq 1 ]]; then
+  plaindev_uninstall_global claude-code
+  echo "claude-code: done."
+  exit 0
+fi
+
+plaindev_verify_skills "$REPO_ROOT"
 
 inject_agents_block() {
   local dest="$1"
@@ -70,35 +81,19 @@ inject_agents_block() {
   echo "  installed: $dest"
 }
 
-strip_agents_block() {
-  local dest="$1"
-  [[ ! -f "$dest" ]] && return
-  awk '
-    /<!-- plaindev-begin -->/ { skip=1; next }
-    /<!-- plaindev-end -->/   { skip=0; next }
-    !skip { print }
-  ' "$dest" > "$dest.tmp"
-  mv "$dest.tmp" "$dest"
-  echo "  cleaned: $dest"
-}
-
-if [[ $UNINSTALL -eq 1 ]]; then
-  echo "claude-code: uninstalling..."
-  [[ -e "$HOME/.claude/skills/plaindev" ]] && rm -rf "$HOME/.claude/skills/plaindev" && echo "  removed: $HOME/.claude/skills/plaindev"
-  [[ -f "$REPO_AGENTS" ]] && grep -q "plaindev-begin" "$REPO_AGENTS" 2>/dev/null && strip_agents_block "$REPO_AGENTS"
-  echo "claude-code: done."
-  exit 0
-fi
-
 echo "claude-code: registering globally..."
-mkdir -p "$(dirname "$USER_DEST")"
-cp "$SKILL_SRC" "$USER_DEST"
-echo "  installed: $USER_DEST"
+plaindev_install_skills_to "$REPO_ROOT" "$GLOBAL_DEST"
+plaindev_remove_legacy_skill_files "$GLOBAL_DEST"
 
 if [[ $ALWAYS_ON -eq 1 ]]; then
-  echo "claude-code: enabling always-on for this repo via AGENTS.md..."
+  echo "claude-code: enabling always-on reply for this repo via AGENTS.md..."
   inject_agents_block "$REPO_AGENTS"
-  echo "claude-code: done. plaindev is now loaded into every session in this repo."
+
+  echo "claude-code: installing local skills for this repo..."
+  plaindev_install_skills_to "$REPO_ROOT" "$LOCAL_DEST"
+
+  echo "claude-code: done. plaindev reply is loaded into every session in this repo."
+  echo "claude-code: invoke plaindev check when reviewing a PR."
 else
-  echo "claude-code: done. Claude Code will apply plaindev when its description matches the task."
+  echo "claude-code: done. Claude Code will apply plaindev skills when their descriptions match the task."
 fi

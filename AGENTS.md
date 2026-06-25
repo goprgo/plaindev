@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This project follows **plaindev** style for all AI-assistant output.
+This project follows **plaindev reply** style for all AI-assistant output.
 
 ## Quick rules
 
@@ -24,7 +24,16 @@ This project follows **plaindev** style for all AI-assistant output.
 
 ## Escape hatches
 
-- Off for the session: "stop plaindev", "no plaindev", "normal mode".
-- One response only: "explain in detail", "be thorough", "long answer".
+Turn off for the rest of the session (does not uninstall):
 
-Full rules: [skills/plaindev/SKILL.md](./skills/plaindev/SKILL.md). Follow them.
+- "stop plaindev reply" — reply only
+- "stop plaindev check" — check only
+- "stop plaindev" — reply and check
+
+**reply** — one response only: "explain in detail", "be thorough", "long answer".
+
+**check** — one response only: "brief check", "table only".
+
+Full rules: [skills/plaindev/reply/SKILL.md](./skills/plaindev/reply/SKILL.md). Follow them.
+
+PR reviews: invoke **plaindev check** — [skills/plaindev/check/SKILL.md](./skills/plaindev/check/SKILL.md).

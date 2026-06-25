@@ -2,9 +2,12 @@
 
 > Inspired by Caveman's no-fluff discipline, tuned for easy reading.
 
-A coding-agent skill that makes AI answers **clear and fast to scan**. Built for everyday software work: bug fixes, features, reviews, explanations. Predictable response shapes, plain words, short sentences. Same technical content, less effort to parse.
+A coding-agent skill pack that makes AI answers **clear and fast to scan**. Two skills ship together:
 
-Non-native English readers and people who find dense text hard to parse benefit most.
+- **plaindev/reply** — structured answers for everyday software work.
+- **plaindev/check** — negative-only GitHub PR review via `gh`.
+
+Built for non-native English readers and people who find dense text hard to parse.
 
 ## Why
 
@@ -29,13 +32,25 @@ plaindev drops that style by default. The output stays in plain words, with the 
 
 You do not need to identify with any of these. If clear, structured output beats friendly preamble for you, plaindev is for you.
 
+## Skills
+
+| Skill | Purpose | Invoke |
+|---|---|---|
+| **reply** | Clear, structured assistant output | `/plaindev/reply`, "use plaindev" |
+| **check** | Negative-only PR review with `gh` | `/plaindev/check`, "check this PR" |
+
+Full rules:
+
+- [skills/plaindev/reply/SKILL.md](./skills/plaindev/reply/SKILL.md)
+- [skills/plaindev/check/SKILL.md](./skills/plaindev/check/SKILL.md)
+
 ## Before / after
 
 **Default AI output**
 
 > Sure! I'd be happy to help. The reason your React component is re-rendering is most likely because you're creating a new object reference on each render cycle. When you pass an inline object as a prop, React's shallow comparison sees it as a different object every render, which triggers a re-render. I'd recommend using `useMemo` to memoize the object.
 
-**plaindev output**
+**plaindev reply**
 
 > **Cause:** Inline object prop creates a new reference each render.
 > **Fix:** Wrap the object in `useMemo`.
@@ -44,71 +59,49 @@ Same fix. Faster to read in any language.
 
 ## Install
 
-One per-tool installer, runnable remotely or from a local clone. `git` is required.
+Supported tools: **Cursor** and **Claude Code** only. `git` is required.
 
-By default the installer **registers** plaindev globally. You activate it per session with `/plaindev` or "use plaindev". To turn it off, say "no plaindev".
+By default the installer **registers both skills globally**. Activate reply per session with `/plaindev/reply` or "use plaindev". Activate check with `/plaindev/check` or "check this PR".
 
-To make plaindev **always active** in the current repo without invocation, pass `--always-on`.
+To make **plaindev reply always active** in the current repo without invocation, pass `--always-on`.
 
 ### Cursor
 
-Global only — invoke with `/plaindev`:
+Global — invoke skills when needed:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install/cursor.sh | bash
 ```
 
-Also always-on for the current repo (writes `.cursor/rules/plaindev.mdc`):
+Also always-on reply for the current repo (writes `.cursor/rules/plaindev-reply.mdc` and local skills):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install/cursor.sh | bash -s -- --always-on
 ```
 
-Uninstall:
+Install paths:
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install/cursor.sh | bash -s -- --uninstall
-```
+- Global: `~/.cursor/skills/plaindev/reply/`, `~/.cursor/skills/plaindev/check/`
+- Local (`--always-on`): `.cursor/skills/plaindev/reply/`, `.cursor/skills/plaindev/check/`, `.cursor/rules/plaindev-reply.mdc`
 
 ### Claude Code
 
-Global only — applied when description matches:
+Global — applied when description matches:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install/claude-code.sh | bash
 ```
 
-Also always-on for the current repo (injects plaindev block into `./AGENTS.md`):
+Also always-on reply for the current repo (injects plaindev block into `./AGENTS.md` and local skills):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install/claude-code.sh | bash -s -- --always-on
 ```
 
-Uninstall:
+Install paths:
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install/claude-code.sh | bash -s -- --uninstall
-```
-
-### Codex
-
-Global only — applied when description matches:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install/codex.sh | bash
-```
-
-Also always-on for the current repo (injects plaindev block into `./AGENTS.md`):
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install/codex.sh | bash -s -- --always-on
-```
-
-Uninstall:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install/codex.sh | bash -s -- --uninstall
-```
+- Global: `~/.claude/skills/plaindev/reply/`, `~/.claude/skills/plaindev/check/`
+- Local (`--always-on`): `.claude/skills/plaindev/reply/`, `.claude/skills/plaindev/check/`, `AGENTS.md` block
 
 ### Install everything at once
 
@@ -118,7 +111,7 @@ Every detected tool, global registration:
 curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install.sh | bash
 ```
 
-Also always-on for the current repo:
+Also always-on reply for the current repo:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install.sh | bash -s -- --always-on
@@ -130,12 +123,6 @@ Specific tools (positional args):
 curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install.sh | bash -s -- cursor claude-code
 ```
 
-Uninstall for every detected tool:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install.sh | bash -s -- --uninstall
-```
-
 ### Or clone and run locally
 
 ```bash
@@ -144,25 +131,59 @@ cd plaindev
 ./install/cursor.sh --always-on   # any of the scripts above, same flags
 ```
 
+## Uninstall (global)
+
+Remove global plaindev skills. **Does not touch repo-local files.**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/uninstall.sh | bash
+```
+
+One tool only:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/uninstall.sh | bash -s -- cursor
+```
+
+Same flag on install scripts also works: `install/cursor.sh --uninstall`.
+
+**Local cleanup** (manual):
+
+- `.cursor/skills/plaindev/`
+- `.cursor/rules/plaindev-reply.mdc`
+- `.claude/skills/plaindev/`
+- `AGENTS.md` block between `<!-- plaindev-begin -->` and `<!-- plaindev-end -->`
+
 ## How plaindev activates (by tool)
 
 | Tool | Global install | `--always-on` (this repo) |
 |---|---|---|
-| **Cursor** | Available, invoke with `/plaindev` | Always active (`alwaysApply: true` rule) |
-| **Claude Code** | Auto-discovered by description, applied when relevant | Always loaded via `AGENTS.md` |
-| **Codex** | Auto-discovered by description, applied when relevant | Always loaded via `AGENTS.md` |
+| **Cursor** | Invoke `/plaindev/reply` or `/plaindev/check` | Reply always active via rule; check on invoke |
+| **Claude Code** | Auto-discovered by description | Reply always loaded via `AGENTS.md` |
 
-To turn plaindev off in any session, just say "no plaindev" or "normal mode".
+To turn a skill off in any session, use its turn-off phrase. This does not uninstall plaindev.
 
 ## Triggers
 
-- **Turn on:** `/plaindev`, "plaindev mode", "use plaindev"
-- **Turn off:** "stop plaindev", "no plaindev", "normal mode"
-- **This response only:** "explain in detail", "be thorough", "long answer"
+**reply**
 
-## Response shapes
+- Turn on: `/plaindev/reply`, "plaindev mode", "use plaindev"
+- Turn off (session): "stop plaindev reply", "stop plaindev"
+- This response only: "explain in detail", "be thorough", "long answer"
 
-plaindev uses four shapes. Once you learn them, scanning becomes automatic.
+**check**
+
+- Turn on: `/plaindev/check`, "check this PR", "pr check"
+- Turn off (session): "stop plaindev check", "stop plaindev"
+- This response only: "brief check", "table only"
+
+**both**
+
+- Turn off (session): "stop plaindev"
+
+## Response shapes (reply)
+
+plaindev reply uses four shapes. Once you learn them, scanning becomes automatic.
 
 | Kind | Shape |
 |---|---|
@@ -178,8 +199,6 @@ plaindev uses four shapes. Once you learn them, scanning becomes automatic.
 - Active voice. Lead with the answer.
 - Headings for 2+ sections. Bullets for 3+ items.
 - Code blocks and error strings stay exact.
-
-Full rules live in [skills/plaindev/SKILL.md](./skills/plaindev/SKILL.md).
 
 ## The name
 

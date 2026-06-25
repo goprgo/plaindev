@@ -7,7 +7,7 @@
 # Usage:
 #   ./install.sh [tool ...] [--always-on] [--uninstall]
 #
-# Tools (positional): cursor, claude-code, codex
+# Tools (positional): cursor, claude-code
 #   If none given, runs every per-tool installer for tools detected on this machine.
 #
 # Flags:
@@ -29,7 +29,7 @@ REPO_URL="https://github.com/gopaz/plaindev.git"
 SELF_REL="install.sh"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-}")" 2>/dev/null && pwd)" || SCRIPT_DIR=""
-if [[ -z "$SCRIPT_DIR" ]] || [[ ! -f "$SCRIPT_DIR/skills/plaindev/SKILL.md" ]]; then
+if [[ -z "$SCRIPT_DIR" ]] || [[ ! -f "$SCRIPT_DIR/skills/plaindev/reply/SKILL.md" ]]; then
   command -v git >/dev/null 2>&1 || { echo "plaindev: git is required for the remote install. install git and retry." >&2; exit 1; }
   TMP="$(mktemp -d -t plaindev.XXXXXX)"
   echo "plaindev: fetching repo into $TMP..."
@@ -41,7 +41,7 @@ if [[ -z "$SCRIPT_DIR" ]] || [[ ! -f "$SCRIPT_DIR/skills/plaindev/SKILL.md" ]]; 
 fi
 
 INSTALL_DIR="$SCRIPT_DIR/install"
-KNOWN_TOOLS=(cursor claude-code codex)
+KNOWN_TOOLS=(cursor claude-code)
 
 TOOLS=()
 PASSTHROUGH=()
@@ -60,7 +60,6 @@ detected() {
   case "$1" in
     cursor)      [[ -d "$HOME/.cursor" ]] ;;
     claude-code) [[ -d "$HOME/.claude" ]] || command -v claude >/dev/null 2>&1 ;;
-    codex)       [[ -d "$HOME/.codex" ]]  || command -v codex  >/dev/null 2>&1 ;;
   esac
 }
 
