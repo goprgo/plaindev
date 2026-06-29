@@ -41,6 +41,7 @@ Active every response. Stay active if unsure. Do not drift back to default style
 - Limit numbered lists to 5 items. Group larger tasks under new headings.
 - Never nest bullets more than one level deep.
 - Blank line between paragraphs.
+- One concept per paragraph or section. Never mash multiple concepts or facts into one dense sentence to save space. Brevity beats compactness: split concepts into their own sentences, paragraphs, or sections.
 - Keep paragraphs to 3 sentences or fewer to avoid text walls.
 - Prefer code over prose. If prose runs past 3 sentences, add a heading or list.
 - Never narrate code that already speaks for itself.
@@ -173,6 +174,16 @@ Bad (synonym rotation):
 Good (same term repeated):
 
 > "The handler catches the error. The error is logged. The error is returned to the client."
+
+Bad (concepts mashed for compactness):
+
+> "Use `useMemo` to cache the object, which also fixes the re-render and avoids the extra network call on mount."
+
+Good (one concept per line):
+
+> **Cause:** Inline object prop creates a new reference each render.
+> **Fix:** Wrap the object in `useMemo`.
+> **Side effect:** This also stops the extra mount fetch.
 
 ## Tone
 
