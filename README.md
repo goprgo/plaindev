@@ -70,13 +70,13 @@ To make **plaindev reply always active** in the current repo without invocation,
 Global — invoke skills when needed:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install/cursor.sh | bash
+curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/install/cursor.sh | bash
 ```
 
 Also always-on reply for the current repo (writes `.cursor/rules/plaindev-reply.mdc` and local skills):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install/cursor.sh | bash -s -- --always-on
+curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/install/cursor.sh | bash -s -- --always-on
 ```
 
 Install paths:
@@ -89,13 +89,13 @@ Install paths:
 Global — applied when description matches:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install/claude-code.sh | bash
+curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/install/claude-code.sh | bash
 ```
 
 Also always-on reply for the current repo (injects plaindev block into `./AGENTS.md` and local skills):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install/claude-code.sh | bash -s -- --always-on
+curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/install/claude-code.sh | bash -s -- --always-on
 ```
 
 Install paths:
@@ -108,25 +108,25 @@ Install paths:
 Every detected tool, global registration:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/install.sh | bash
 ```
 
 Also always-on reply for the current repo:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install.sh | bash -s -- --always-on
+curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/install.sh | bash -s -- --always-on
 ```
 
 Specific tools (positional args):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/install.sh | bash -s -- cursor claude-code
+curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/install.sh | bash -s -- cursor claude-code
 ```
 
 ### Or clone and run locally
 
 ```bash
-git clone https://github.com/gopaz/plaindev.git
+git clone https://github.com/goprgo/plaindev.git
 cd plaindev
 ./install/cursor.sh --always-on   # any of the scripts above, same flags
 ```
@@ -136,13 +136,13 @@ cd plaindev
 Remove global plaindev skills. **Does not touch repo-local files.**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/uninstall.sh | bash
+curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/uninstall.sh | bash
 ```
 
 One tool only:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/gopaz/plaindev/main/uninstall.sh | bash -s -- cursor
+curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/uninstall.sh | bash -s -- cursor
 ```
 
 Same flag on install scripts also works: `install/cursor.sh --uninstall`.
