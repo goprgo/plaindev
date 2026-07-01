@@ -18,7 +18,7 @@
 
 set -euo pipefail
 
-REPO_URL="https://github.com/gopaz/plaindev.git"
+REPO_URL="https://github.com/goprgo/plaindev.git"
 SELF_REL="install/claude-code.sh"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-}")" 2>/dev/null && pwd)" || SCRIPT_DIR=""
@@ -40,6 +40,7 @@ source "$SCRIPT_DIR/lib.sh"
 AGENTS_SRC="$REPO_ROOT/AGENTS.md"
 
 GLOBAL_DEST="$HOME/.claude/skills/plaindev"
+GLOBAL_CLAUDE_MD="$HOME/.claude/CLAUDE.md"
 LOCAL_DEST="$PWD/.claude/skills/plaindev"
 REPO_AGENTS="$PWD/AGENTS.md"
 
@@ -59,6 +60,7 @@ done
 
 if [[ $UNINSTALL -eq 1 ]]; then
   plaindev_uninstall_global claude-code
+  plaindev_remove_claude_md_block "$GLOBAL_CLAUDE_MD"
   echo "claude-code: done."
   exit 0
 fi
@@ -84,6 +86,7 @@ inject_agents_block() {
 echo "claude-code: registering globally..."
 plaindev_install_skills_to "$REPO_ROOT" "$GLOBAL_DEST"
 plaindev_remove_legacy_skill_files "$GLOBAL_DEST"
+plaindev_inject_claude_md "$GLOBAL_CLAUDE_MD" "$GLOBAL_DEST"
 
 if [[ $ALWAYS_ON -eq 1 ]]; then
   echo "claude-code: enabling always-on reply for this repo via AGENTS.md..."

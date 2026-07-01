@@ -25,7 +25,7 @@
 
 set -euo pipefail
 
-REPO_URL="https://github.com/gopaz/plaindev.git"
+REPO_URL="https://github.com/goprgo/plaindev.git"
 SELF_REL="install.sh"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-}")" 2>/dev/null && pwd)" || SCRIPT_DIR=""

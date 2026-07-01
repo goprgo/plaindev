@@ -50,6 +50,41 @@ plaindev_remove_legacy_skill_files() {
   [[ -f "$dest_root/SKILL.md" ]] && rm -f "$dest_root/SKILL.md" && echo "  removed legacy: $dest_root/SKILL.md"
 }
 
+plaindev_inject_claude_md() {
+  local dest="$1"
+  local global_dest="$2"
+  if [[ -f "$dest" ]] && grep -q "plaindev-begin" "$dest" 2>/dev/null; then
+    echo "  skipped (already present): $dest"
+    return
+  fi
+  local block
+  block="$(cat <<EOF
+
+<!-- plaindev-begin -->
+## plaindev skills
+
+Skills installed at \`~/.claude/skills/plaindev/\`. Read and apply one when the user invokes it:
+
+- **reply** (\`$global_dest/reply/SKILL.md\`) — clear, structured output. Invoke: \`/plaindev/reply\` or "use plaindev".
+- **check** (\`$global_dest/check/SKILL.md\`) — negative-only PR review. Invoke: \`/plaindev/check\` or "check this PR".
+<!-- plaindev-end -->
+EOF
+)"
+  printf '%s\n' "$block" >> "$dest"
+  echo "  registered: $dest"
+}
+
+plaindev_remove_claude_md_block() {
+  local dest="$1"
+  [[ -f "$dest" ]] || return 0
+  grep -q "plaindev-begin" "$dest" 2>/dev/null || return 0
+  local tmp
+  tmp="$(mktemp)"
+  awk '/<!-- plaindev-begin -->/{skip=1} !skip{print} /<!-- plaindev-end -->/{skip=0}' "$dest" > "$tmp"
+  mv "$tmp" "$dest"
+  echo "  removed block: $dest"
+}
+
 plaindev_uninstall_global() {
   local tool="$1"
   case "$tool" in
