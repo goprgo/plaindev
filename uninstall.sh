@@ -3,9 +3,9 @@
 #
 # Removes global plaindev skills only. Does not touch repo-local files.
 # To remove local installs, delete these yourself:
-#   .cursor/skills/plaindev/
+#   .cursor/skills/plaindev-reply/, .cursor/skills/plaindev-check/
 #   .cursor/rules/plaindev-reply.mdc
-#   .claude/skills/plaindev/
+#   .claude/skills/plaindev-reply/, .claude/skills/plaindev-check/
 #   AGENTS.md plaindev block (between <!-- plaindev-begin --> and <!-- plaindev-end -->)
 #
 # Usage:
@@ -47,12 +47,26 @@ plaindev_remove_tree() {
   fi
 }
 
-plaindev_remove_legacy_file() {
+# Remove flat skills (plaindev-reply, plaindev-check) plus the old nested
+# layout (plaindev/) left by earlier versions, under a skills parent dir.
+plaindev_remove_from() {
+  local skills_parent="$1"
+  plaindev_remove_tree "$skills_parent/plaindev-reply"
+  plaindev_remove_tree "$skills_parent/plaindev-check"
+  [[ -e "$skills_parent/plaindev" ]] && plaindev_remove_tree "$skills_parent/plaindev"
+  return 0
+}
+
+# Remove the plaindev block from a CLAUDE.md, if present.
+plaindev_remove_claude_md_block() {
   local dest="$1"
-  if [[ -f "$dest" ]]; then
-    rm -f "$dest"
-    echo "  removed legacy: $dest"
-  fi
+  [[ -f "$dest" ]] || return 0
+  grep -q "plaindev-begin" "$dest" 2>/dev/null || return 0
+  local tmp
+  tmp="$(mktemp)"
+  awk '/<!-- plaindev-begin -->/{skip=1} !skip{print} /<!-- plaindev-end -->/{skip=0}' "$dest" > "$tmp"
+  mv "$tmp" "$dest"
+  echo "  removed block: $dest"
 }
 
 plaindev_uninstall_global() {
@@ -60,13 +74,12 @@ plaindev_uninstall_global() {
   case "$tool" in
     cursor)
       echo "cursor: removing global plaindev..."
-      plaindev_remove_legacy_file "$HOME/.cursor/skills/plaindev/SKILL.md"
-      plaindev_remove_tree "$HOME/.cursor/skills/plaindev"
+      plaindev_remove_from "$HOME/.cursor/skills"
       ;;
     claude-code)
       echo "claude-code: removing global plaindev..."
-      plaindev_remove_legacy_file "$HOME/.claude/skills/plaindev/SKILL.md"
-      plaindev_remove_tree "$HOME/.claude/skills/plaindev"
+      plaindev_remove_from "$HOME/.claude/skills"
+      plaindev_remove_claude_md_block "$HOME/.claude/CLAUDE.md"
       ;;
     *)
       echo "plaindev: unknown tool: $tool (valid: cursor, claude-code)" >&2

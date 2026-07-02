@@ -1,12 +1,12 @@
 ---
-name: reply
+name: plaindev-reply
 description: >
   plaindev reply — clear, structured coding-assistant output, built first for
   non-native English speakers. Folks with ADHD and anyone who prefers concise
   answers may find it useful too. Cuts fluff, uses plain words and short
   sentences, and organises answers with predictable shapes. Use when the user
-  invokes /plaindev/reply, /reply, says "plaindev mode", "use plaindev", or
-  asks for simpler, clearer, or more structured output.
+  invokes /plaindev-reply, says "plaindev mode", "use plaindev", or asks for
+  simpler, clearer, or more structured output.
 ---
 
 # reply

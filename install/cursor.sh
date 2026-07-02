@@ -2,14 +2,14 @@
 # plaindev installer for Cursor.
 #
 # Default: registers both skills globally.
-#   ~/.cursor/skills/plaindev/reply/SKILL.md
-#   ~/.cursor/skills/plaindev/check/SKILL.md
-#   Invoke with /plaindev/reply, /plaindev/check, or "use plaindev".
+#   ~/.cursor/skills/plaindev-reply/SKILL.md
+#   ~/.cursor/skills/plaindev-check/SKILL.md
+#   Invoke with /plaindev-reply, /plaindev-check, or "use plaindev".
 #
 # With --always-on: also enables reply in the current repo and copies both skills locally.
 #   ./.cursor/rules/plaindev-reply.mdc   (alwaysApply: true)
-#   ./.cursor/skills/plaindev/reply/SKILL.md
-#   ./.cursor/skills/plaindev/check/SKILL.md
+#   ./.cursor/skills/plaindev-reply/SKILL.md
+#   ./.cursor/skills/plaindev-check/SKILL.md
 #
 # Flags:
 #   --always-on    Make plaindev reply always active in the current repo.
@@ -39,10 +39,9 @@ source "$SCRIPT_DIR/lib.sh"
 
 REPLY_SRC="$(plaindev_skill_src "$REPO_ROOT" reply)"
 
-GLOBAL_DEST="$HOME/.cursor/skills/plaindev"
-LOCAL_DEST="$PWD/.cursor/skills/plaindev"
+GLOBAL_DEST="$HOME/.cursor/skills"
+LOCAL_DEST="$PWD/.cursor/skills"
 REPO_RULE="$PWD/.cursor/rules/plaindev-reply.mdc"
-LEGACY_RULE="$PWD/.cursor/rules/plaindev.mdc"
 
 ALWAYS_ON=0
 UNINSTALL=0
@@ -67,8 +66,8 @@ fi
 plaindev_verify_skills "$REPO_ROOT"
 
 echo "cursor: registering globally..."
+plaindev_remove_legacy_nested "$GLOBAL_DEST"
 plaindev_install_skills_to "$REPO_ROOT" "$GLOBAL_DEST"
-plaindev_remove_legacy_skill_files "$GLOBAL_DEST"
 
 if [[ $ALWAYS_ON -eq 1 ]]; then
   echo "cursor: enabling always-on reply for this repo..."
@@ -84,10 +83,11 @@ if [[ $ALWAYS_ON -eq 1 ]]; then
   echo "  installed: $REPO_RULE"
 
   echo "cursor: installing local skills for this repo..."
+  plaindev_remove_legacy_nested "$LOCAL_DEST"
   plaindev_install_skills_to "$REPO_ROOT" "$LOCAL_DEST"
 
   echo "cursor: done. plaindev reply is active by default in this repo."
-  echo "cursor: invoke plaindev check with /plaindev/check."
+  echo "cursor: invoke plaindev check with /plaindev-check."
 else
-  echo "cursor: done. invoke with /plaindev/reply, /plaindev/check, or 'use plaindev'."
+  echo "cursor: done. invoke with /plaindev-reply, /plaindev-check, or 'use plaindev'."
 fi

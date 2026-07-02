@@ -1,19 +1,23 @@
 #!/usr/bin/env bash
 # Shared helpers for plaindev installers.
+#
+# Skills install FLAT, one directory level, to match the Agent Skills / Claude
+# Code convention: <skills>/<skill-name>/SKILL.md. The command name is the
+# directory name, so these install as plaindev-reply and plaindev-check and are
+# invoked with /plaindev-reply and /plaindev-check.
 
 set -euo pipefail
 
 PLAIN_DEV_SKILLS=(reply check)
 
-plaindev_skills_root() {
-  local repo_root="$1"
-  echo "$repo_root/skills/plaindev"
-}
-
 plaindev_skill_src() {
   local repo_root="$1"
   local skill="$2"
-  echo "$(plaindev_skills_root "$repo_root")/$skill/SKILL.md"
+  echo "$repo_root/skills/plaindev/$skill/SKILL.md"
+}
+
+plaindev_installed_name() {
+  echo "plaindev-$1"
 }
 
 plaindev_verify_skills() {
@@ -25,37 +29,50 @@ plaindev_verify_skills() {
   done
 }
 
+# Install each skill flat under a skills parent dir as plaindev-<skill>/SKILL.md.
 plaindev_install_skills_to() {
   local repo_root="$1"
-  local dest_root="$2"
+  local skills_parent="$2"
   local skill src dest
   for skill in "${PLAIN_DEV_SKILLS[@]}"; do
     src="$(plaindev_skill_src "$repo_root" "$skill")"
-    dest="$dest_root/$skill/SKILL.md"
+    dest="$skills_parent/$(plaindev_installed_name "$skill")/SKILL.md"
     mkdir -p "$(dirname "$dest")"
     cp "$src" "$dest"
     echo "  installed: $dest"
   done
 }
 
-plaindev_remove_skill_tree() {
-  local dest_root="$1"
-  [[ -e "$dest_root" ]] || return 0
-  rm -rf "$dest_root"
-  echo "  removed: $dest_root"
+# Remove the old nested layout (~/.<tool>/skills/plaindev/) left by earlier
+# versions. Safe to call before a fresh install.
+plaindev_remove_legacy_nested() {
+  local skills_parent="$1"
+  if [[ -e "$skills_parent/plaindev" ]]; then
+    rm -rf "$skills_parent/plaindev"
+    echo "  removed legacy: $skills_parent/plaindev"
+  fi
 }
 
-plaindev_remove_legacy_skill_files() {
-  local dest_root="$1"
-  [[ -f "$dest_root/SKILL.md" ]] && rm -f "$dest_root/SKILL.md" && echo "  removed legacy: $dest_root/SKILL.md"
+# Remove installed flat skills plus any legacy nested layout.
+plaindev_remove_installed_skills() {
+  local skills_parent="$1"
+  local skill dir
+  for skill in "${PLAIN_DEV_SKILLS[@]}"; do
+    dir="$skills_parent/$(plaindev_installed_name "$skill")"
+    if [[ -e "$dir" ]]; then
+      rm -rf "$dir"
+      echo "  removed: $dir"
+    fi
+  done
+  plaindev_remove_legacy_nested "$skills_parent"
 }
 
 plaindev_inject_claude_md() {
   local dest="$1"
-  local global_dest="$2"
+  local skills_parent="$2"
+  # Refresh: drop any existing block first so re-runs pick up path/command changes.
   if [[ -f "$dest" ]] && grep -q "plaindev-begin" "$dest" 2>/dev/null; then
-    echo "  skipped (already present): $dest"
-    return
+    plaindev_remove_claude_md_block "$dest"
   fi
   local block
   block="$(cat <<EOF
@@ -63,10 +80,10 @@ plaindev_inject_claude_md() {
 <!-- plaindev-begin -->
 ## plaindev skills
 
-Skills installed at \`~/.claude/skills/plaindev/\`. Read and apply one when the user invokes it:
+Skills installed at \`$skills_parent/\`. Read and apply one when the user invokes it:
 
-- **reply** (\`$global_dest/reply/SKILL.md\`) — clear, structured output. Invoke: \`/plaindev/reply\` or "use plaindev".
-- **check** (\`$global_dest/check/SKILL.md\`) — negative-only PR review. Invoke: \`/plaindev/check\` or "check this PR".
+- **plaindev-reply** (\`$skills_parent/plaindev-reply/SKILL.md\`) — clear, structured output. Invoke: \`/plaindev-reply\` or "use plaindev".
+- **plaindev-check** (\`$skills_parent/plaindev-check/SKILL.md\`) — negative-only PR review. Invoke: \`/plaindev-check\` or "check this PR".
 <!-- plaindev-end -->
 EOF
 )"
@@ -90,13 +107,11 @@ plaindev_uninstall_global() {
   case "$tool" in
     cursor)
       echo "cursor: removing global plaindev..."
-      plaindev_remove_legacy_skill_files "$HOME/.cursor/skills/plaindev"
-      plaindev_remove_skill_tree "$HOME/.cursor/skills/plaindev"
+      plaindev_remove_installed_skills "$HOME/.cursor/skills"
       ;;
     claude-code)
       echo "claude-code: removing global plaindev..."
-      plaindev_remove_legacy_skill_files "$HOME/.claude/skills/plaindev"
-      plaindev_remove_skill_tree "$HOME/.claude/skills/plaindev"
+      plaindev_remove_installed_skills "$HOME/.claude/skills"
       ;;
     *)
       echo "plaindev: unknown tool: $tool (valid: cursor, claude-code)" >&2

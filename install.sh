@@ -94,7 +94,8 @@ echo "  tools: ${TOOLS[*]}"
 
 for tool in "${TOOLS[@]}"; do
   echo
-  bash "$INSTALL_DIR/$tool.sh" "${PASSTHROUGH[@]}"
+  # Expand PASSTHROUGH safely when empty (bash 3.2 + set -u errors on "${arr[@]}").
+  bash "$INSTALL_DIR/$tool.sh" ${PASSTHROUGH[@]+"${PASSTHROUGH[@]}"}
 done
 
 echo

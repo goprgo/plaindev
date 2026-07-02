@@ -2,14 +2,15 @@
 # plaindev installer for Claude Code.
 #
 # Default: registers both skills globally.
-#   ~/.claude/skills/plaindev/reply/SKILL.md
-#   ~/.claude/skills/plaindev/check/SKILL.md
+#   ~/.claude/skills/plaindev-reply/SKILL.md
+#   ~/.claude/skills/plaindev-check/SKILL.md
 #   Claude Code auto-discovers them via description and applies when relevant.
+#   Invoke directly with /plaindev-reply or /plaindev-check.
 #
 # With --always-on: also injects a plaindev block into AGENTS.md and copies both skills locally.
 #   ./AGENTS.md   (block fenced with <!-- plaindev-begin --> ... <!-- plaindev-end -->)
-#   ./.claude/skills/plaindev/reply/SKILL.md
-#   ./.claude/skills/plaindev/check/SKILL.md
+#   ./.claude/skills/plaindev-reply/SKILL.md
+#   ./.claude/skills/plaindev-check/SKILL.md
 #
 # Flags:
 #   --always-on    Make plaindev reply always active in the current repo (auto-loaded via AGENTS.md).
@@ -39,9 +40,9 @@ source "$SCRIPT_DIR/lib.sh"
 
 AGENTS_SRC="$REPO_ROOT/AGENTS.md"
 
-GLOBAL_DEST="$HOME/.claude/skills/plaindev"
+GLOBAL_DEST="$HOME/.claude/skills"
 GLOBAL_CLAUDE_MD="$HOME/.claude/CLAUDE.md"
-LOCAL_DEST="$PWD/.claude/skills/plaindev"
+LOCAL_DEST="$PWD/.claude/skills"
 REPO_AGENTS="$PWD/AGENTS.md"
 
 ALWAYS_ON=0
@@ -84,8 +85,8 @@ inject_agents_block() {
 }
 
 echo "claude-code: registering globally..."
+plaindev_remove_legacy_nested "$GLOBAL_DEST"
 plaindev_install_skills_to "$REPO_ROOT" "$GLOBAL_DEST"
-plaindev_remove_legacy_skill_files "$GLOBAL_DEST"
 plaindev_inject_claude_md "$GLOBAL_CLAUDE_MD" "$GLOBAL_DEST"
 
 if [[ $ALWAYS_ON -eq 1 ]]; then
@@ -93,6 +94,7 @@ if [[ $ALWAYS_ON -eq 1 ]]; then
   inject_agents_block "$REPO_AGENTS"
 
   echo "claude-code: installing local skills for this repo..."
+  plaindev_remove_legacy_nested "$LOCAL_DEST"
   plaindev_install_skills_to "$REPO_ROOT" "$LOCAL_DEST"
 
   echo "claude-code: done. plaindev reply is loaded into every session in this repo."

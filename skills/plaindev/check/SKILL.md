@@ -1,19 +1,19 @@
 ---
-name: check
+name: plaindev-check
 description: >
   plaindev check — review GitHub pull requests with gh and return negative-only
   structured criticism in plaindev reply style. Reports bugs, issues, gaps, and
   sub-optimal code only — no praise or neutral notes. ADHD-friendly ESL output:
   compact rows with location, what, why, and fix. Use when the user invokes
-  /plaindev/check, /check, says "pr check", "check this PR", or asks for PR
-  review on a GitHub pull request.
+  /plaindev-check, says "pr check", "check this PR", or asks for PR review on a
+  GitHub pull request.
 ---
 
 # check
 
 Review a GitHub PR with `gh`. Report **negative findings only**: bugs, issues, gaps, sub-optimal implementations. Skip praise, neutral notes, preamble, and filler.
 
-Follow [plaindev reply](../reply/SKILL.md) hard rules for prose. This skill adds PR workflow and output shape.
+Follow the **plaindev-reply** skill hard rules for prose. This skill adds PR workflow and output shape.
 
 ## Persistence
 

@@ -4,8 +4,8 @@
 
 A coding-agent skill pack that makes AI answers **clear and fast to scan**. Two skills ship together:
 
-- **plaindev/reply** — structured answers for everyday software work.
-- **plaindev/check** — negative-only GitHub PR review via `gh`.
+- **plaindev-reply** — structured answers for everyday software work.
+- **plaindev-check** — negative-only GitHub PR review via `gh`.
 
 Built for non-native English readers and people who find dense text hard to parse.
 
@@ -36,8 +36,8 @@ You do not need to identify with any of these. If clear, structured output beats
 
 | Skill | Purpose | Invoke |
 |---|---|---|
-| **reply** | Clear, structured assistant output | `/plaindev/reply`, "use plaindev" |
-| **check** | Negative-only PR review with `gh` | `/plaindev/check`, "check this PR" |
+| **plaindev-reply** | Clear, structured assistant output | `/plaindev-reply`, "use plaindev" |
+| **plaindev-check** | Negative-only PR review with `gh` | `/plaindev-check`, "check this PR" |
 
 Full rules:
 
@@ -59,9 +59,11 @@ Same fix. Faster to read in any language.
 
 ## Install
 
-Supported tools: **Cursor** and **Claude Code** only. `git` is required.
+Supported tools: **Cursor** and **Claude Code**. `git` is required.
 
-By default the installer **registers both skills globally**. Activate reply per session with `/plaindev/reply` or "use plaindev". Activate check with `/plaindev/check` or "check this PR".
+> **Using Claude Desktop?** Its local agent / code sessions run on Claude Code, so the Claude Code install below already covers them — the skills load from `~/.claude/skills/`. The plain **chat tab** is different: it reads skills from the server, not disk, so add them once at [claude.ai/customize/skills](https://claude.ai/customize/skills).
+
+By default the installer **registers both skills globally**. Activate reply per session with `/plaindev-reply` or "use plaindev". Activate check with `/plaindev-check` or "check this PR".
 
 To make **plaindev reply always active** in the current repo without invocation, pass `--always-on`.
 
@@ -81,8 +83,8 @@ curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/install/cursor
 
 Install paths:
 
-- Global: `~/.cursor/skills/plaindev/reply/`, `~/.cursor/skills/plaindev/check/`
-- Local (`--always-on`): `.cursor/skills/plaindev/reply/`, `.cursor/skills/plaindev/check/`, `.cursor/rules/plaindev-reply.mdc`
+- Global: `~/.cursor/skills/plaindev-reply/`, `~/.cursor/skills/plaindev-check/`
+- Local (`--always-on`): `.cursor/skills/plaindev-reply/`, `.cursor/skills/plaindev-check/`, `.cursor/rules/plaindev-reply.mdc`
 
 ### Claude Code
 
@@ -100,8 +102,8 @@ curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/install/claude
 
 Install paths:
 
-- Global: `~/.claude/skills/plaindev/reply/`, `~/.claude/skills/plaindev/check/`
-- Local (`--always-on`): `.claude/skills/plaindev/reply/`, `.claude/skills/plaindev/check/`, `AGENTS.md` block
+- Global: `~/.claude/skills/plaindev-reply/`, `~/.claude/skills/plaindev-check/`
+- Local (`--always-on`): `.claude/skills/plaindev-reply/`, `.claude/skills/plaindev-check/`, `AGENTS.md` block
 
 ### Install everything at once
 
@@ -158,7 +160,7 @@ Same flag on install scripts also works: `install/cursor.sh --uninstall`.
 
 | Tool | Global install | `--always-on` (this repo) |
 |---|---|---|
-| **Cursor** | Invoke `/plaindev/reply` or `/plaindev/check` | Reply always active via rule; check on invoke |
+| **Cursor** | Invoke `/plaindev-reply` or `/plaindev-check` | Reply always active via rule; check on invoke |
 | **Claude Code** | Auto-discovered by description | Reply always loaded via `AGENTS.md` |
 
 To turn a skill off in any session, use its turn-off phrase. This does not uninstall plaindev.
@@ -167,13 +169,13 @@ To turn a skill off in any session, use its turn-off phrase. This does not unins
 
 **reply**
 
-- Turn on: `/plaindev/reply`, "plaindev mode", "use plaindev"
+- Turn on: `/plaindev-reply`, "plaindev mode", "use plaindev"
 - Turn off (session): "stop plaindev reply", "stop plaindev"
 - This response only: "explain in detail", "be thorough", "long answer"
 
 **check**
 
-- Turn on: `/plaindev/check`, "check this PR", "pr check"
+- Turn on: `/plaindev-check`, "check this PR", "pr check"
 - Turn off (session): "stop plaindev check", "stop plaindev"
 - This response only: "brief check", "table only"
 
