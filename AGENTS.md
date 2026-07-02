@@ -37,3 +37,5 @@ Turn off for the rest of the session (does not uninstall):
 Full rules: [skills/plaindev/reply/SKILL.md](./skills/plaindev/reply/SKILL.md). Follow them.
 
 PR reviews: invoke **plaindev check** — [skills/plaindev/check/SKILL.md](./skills/plaindev/check/SKILL.md).
+
+Ticket-to-PR workflow: invoke **plaindev task** — [skills/plaindev/task/SKILL.md](./skills/plaindev/task/SKILL.md).
