@@ -215,7 +215,7 @@ plaindev reply uses four shapes. Once you learn them, scanning becomes automatic
 
 ## The name
 
-A small pun on ESL: col**ESL**aw. The lowercase spelling is canonical everywhere — the capitals are just here so the joke lands.
+**plain** + **dev**: plain language for developers. The lowercase spelling is canonical everywhere.
 
 ## Status
 
