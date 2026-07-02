@@ -184,7 +184,7 @@ To turn a skill off in any session, use its turn-off phrase. This does not unins
 - Turn off (session): "stop plaindev check", "stop plaindev"
 - This response only: "brief check", "table only"
 
-**task**
+**task** (on-demand only — never auto-triggered; `disable-model-invocation: true`)
 
 - Turn on: `/plaindev-task`, "run the task workflow", "ticket to PR"
 - Turn off (session): "stop plaindev task", "stop plaindev"

@@ -4,9 +4,10 @@ description: >
   plaindev task — run a full ticket-to-PR dev workflow. Creates a Jira issue,
   moves it to In Progress, checks out a branch, makes conventional commits,
   pushes, opens a PR with gh, and moves the issue to In Review. Uses the
-  Atlassian MCP tools for Jira and the gh CLI for GitHub. Use when the user
-  invokes /plaindev-task, says "run the task workflow", "ticket to PR", "start
-  a task", or describes a piece of work and asks you to handle the whole flow.
+  Atlassian MCP tools for Jira and the gh CLI for GitHub. On-demand only:
+  run when the user explicitly invokes /plaindev-task, says "run the task
+  workflow", or "ticket to PR". Do not trigger it automatically.
+disable-model-invocation: true
 ---
 
 # task
