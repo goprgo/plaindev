@@ -2,10 +2,11 @@
 
 > Inspired by Caveman's no-fluff discipline, tuned for easy reading.
 
-A coding-agent skill pack that makes AI answers **clear and fast to scan**. Two skills ship together:
+A coding-agent skill pack that makes AI answers **clear and fast to scan**. Three skills ship together:
 
 - **plaindev-reply** — structured answers for everyday software work.
 - **plaindev-check** — negative-only GitHub PR review via `gh`.
+- **plaindev-task** — full ticket-to-PR workflow via Jira (Atlassian MCP) and `gh`.
 
 Built for non-native English readers and people who find dense text hard to parse.
 
@@ -38,11 +39,15 @@ You do not need to identify with any of these. If clear, structured output beats
 |---|---|---|
 | **plaindev-reply** | Clear, structured assistant output | `/plaindev-reply`, "use plaindev" |
 | **plaindev-check** | Negative-only PR review with `gh` | `/plaindev-check`, "check this PR" |
+| **plaindev-task** | Ticket → branch → commits → PR (Jira + `gh`) | `/plaindev-task`, "run the task workflow" |
 
 Full rules:
 
 - [skills/plaindev/reply/SKILL.md](./skills/plaindev/reply/SKILL.md)
 - [skills/plaindev/check/SKILL.md](./skills/plaindev/check/SKILL.md)
+- [skills/plaindev/task/SKILL.md](./skills/plaindev/task/SKILL.md)
+
+**plaindev-task requirements:** the [Atlassian MCP connector](https://claude.ai) authorized for Jira, and the `gh` CLI authenticated (`gh auth login`). Set a default Jira project with `PLAINDEV_JIRA_PROJECT` (env var) or a `.plaindev/config` line `PLAINDEV_JIRA_PROJECT=KEY`.
 
 ## Before / after
 
@@ -83,8 +88,8 @@ curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/install/cursor
 
 Install paths:
 
-- Global: `~/.cursor/skills/plaindev-reply/`, `~/.cursor/skills/plaindev-check/`
-- Local (`--always-on`): `.cursor/skills/plaindev-reply/`, `.cursor/skills/plaindev-check/`, `.cursor/rules/plaindev-reply.mdc`
+- Global: `~/.cursor/skills/plaindev-reply/`, `~/.cursor/skills/plaindev-check/`, `~/.cursor/skills/plaindev-task/`
+- Local (`--always-on`): `.cursor/skills/plaindev-reply/`, `.cursor/skills/plaindev-check/`, `.cursor/skills/plaindev-task/`, `.cursor/rules/plaindev-reply.mdc`
 
 ### Claude Code
 
@@ -102,8 +107,8 @@ curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/install/claude
 
 Install paths:
 
-- Global: `~/.claude/skills/plaindev-reply/`, `~/.claude/skills/plaindev-check/`
-- Local (`--always-on`): `.claude/skills/plaindev-reply/`, `.claude/skills/plaindev-check/`, `AGENTS.md` block
+- Global: `~/.claude/skills/plaindev-reply/`, `~/.claude/skills/plaindev-check/`, `~/.claude/skills/plaindev-task/`
+- Local (`--always-on`): `.claude/skills/plaindev-reply/`, `.claude/skills/plaindev-check/`, `.claude/skills/plaindev-task/`, `AGENTS.md` block
 
 ### Install everything at once
 
@@ -179,7 +184,13 @@ To turn a skill off in any session, use its turn-off phrase. This does not unins
 - Turn off (session): "stop plaindev check", "stop plaindev"
 - This response only: "brief check", "table only"
 
-**both**
+**task** (on-demand only — never auto-triggered; `disable-model-invocation: true`)
+
+- Turn on: `/plaindev-task`, "run the task workflow", "ticket to PR"
+- Turn off (session): "stop plaindev task", "stop plaindev"
+- Scope one run: "no ticket", "ticket only", "draft PR", "skip review"
+
+**all**
 
 - Turn off (session): "stop plaindev"
 
@@ -204,7 +215,7 @@ plaindev reply uses four shapes. Once you learn them, scanning becomes automatic
 
 ## The name
 
-A small pun on ESL: col**ESL**aw. The lowercase spelling is canonical everywhere — the capitals are just here so the joke lands.
+**plain** + **dev**: plain language for developers. The lowercase spelling is canonical everywhere.
 
 ## Status
 
