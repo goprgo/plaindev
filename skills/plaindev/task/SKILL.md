@@ -57,7 +57,7 @@ Run these checks before the plan gate. Stop on the first failure and report it.
 
 ## Build the plan
 
-Derive these values:
+First decide the issue structure (see below). Then derive these values:
 
 - **Project:** resolved key.
 - **Issue type:** infer from the work (Bug for a fix, Story or Task otherwise). Ask only if unclear.
@@ -65,6 +65,16 @@ Derive these values:
 - **Description:** short body. Include acceptance notes if the user gave any.
 - **Branch:** `<key-lower>-<slug>`, e.g. `proj-123-add-session-expiry`. Slug is the summary, lowercased, hyphenated, max ~6 words.
 - **Base branch:** from preflight.
+
+### Single issue or story with sub-tasks
+
+Default to one issue. Consider a **Story with sub-tasks** when any of these hold:
+
+- The work spans **multiple repos**.
+- The steps must run **sequentially**, each a milestone.
+- The work splits into **clearly separable units**.
+
+For a story, create one sub-task per unit, repo, or phase. Each sub-task gets its own branch, commits, and PR. The story tracks the whole effort. Move each sub-task through In Progress and In Review on its own. Show the sub-task breakdown in the plan for approval before creating anything.
 
 Show the plan and ask to proceed:
 
@@ -82,7 +92,7 @@ Proceed? (yes / edit)
 
 After approval, run in order. Report each step in one line as it completes.
 
-1. **Create the issue.** Use the Atlassian MCP create-issue tool. Assign to the current user. Capture the issue key and URL.
+1. **Create the issue.** Use the Atlassian MCP create-issue tool. Assign to the current user. Capture the issue key and URL. For a story, create the Story first, then one Sub-task per unit with the story as parent. Run steps 2–8 per sub-task. Capture every key and URL.
 2. **Move to In Progress.** List the issue transitions. Match a target whose name contains "progress" (case-insensitive). If none matches, list the options and ask. Apply the transition.
 3. **Create the branch.** Branch from the freshly fetched base: `git checkout -b <branch> origin/<base>`. This guarantees the branch starts from the latest base. If the branch exists, check it out and continue.
 4. **Do the work and commit.** Make the code changes. Group them into logical units. Commit each unit with a conventional message and the ticket key in the footer:
@@ -101,13 +111,26 @@ After approval, run in order. Report each step in one line as it completes.
 
 ## Output shape
 
-End with this summary. Use real URLs.
+End with this summary. Use real clickable links.
+
+Single issue:
 
 ```
 **Ticket:** [PROJ-123 Add session expiry](url) — In Review
 **Branch:** proj-123-add-session-expiry
 **Commits:** 3
 **PR:** [#45 Add session expiry](url) — Open
+```
+
+Story with sub-tasks (one row per sub-task):
+
+```
+**Story:** [PROJ-120 Session expiry rollout](url)
+
+| Sub-task | Status | Branch | PR |
+|----------|--------|--------|----|
+| [PROJ-121 API expiry check](url) | In Review | proj-121-api-expiry | [#45](url) |
+| [PROJ-122 Client refresh](url) | In Review | proj-122-client-refresh | [#46](url) |
 ```
 
 ## Failure handling
