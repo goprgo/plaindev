@@ -152,7 +152,7 @@ If any step fails:
 
 1. Stop. Do not run later steps.
 2. State the failed step and the exact error in one or two sentences.
-3. List what already happened (issue created, branch pushed, and so on), so the developer can resume by hand.
+3. List what already happened (issue created, branch pushed, and so on), so the developer can resume by hand. Include clickable links to any issue and PR already created.
 4. Suggest the one next action to recover.
 
 Do not invent issue keys, transition names, or PR numbers. Read them from the tool output.
