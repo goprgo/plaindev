@@ -105,7 +105,20 @@ After approval, run in order. Report each step in one line as it completes.
 
    Use `feat`, `fix`, `refactor`, `test`, `docs`, `chore` as the type. One concern per commit.
 5. **Push.** `git push -u origin <branch>`.
-6. **Open the PR.** `gh pr create --base <base> --head <branch> --title "<summary>" --body "<body>"`. The body includes a one-line summary, `Refs: PROJ-123`, a short "What changed" list, and a "Test" line. Capture the PR URL.
+6. **Open the PR.** `gh pr create --base <base> --head <branch> --title "<summary>" --body "<body>"`. Capture the PR URL. Start the body with a **TL;DR** so a reviewer grasps the change at a glance, then the detailed description:
+
+   ```
+   ## TL;DR
+   One or two sentences: what this PR does and why.
+
+   ## What changed
+   - point per meaningful change
+
+   ## Test
+   How it was verified.
+
+   Refs: PROJ-123
+   ```
 7. **Link the PR to the issue.** Add a Jira comment with the PR URL. Add a remote link too if the MCP tools support it.
 8. **Move to In Review.** List transitions again. Match a name containing "review" (case-insensitive). If none matches, list the options and ask. Apply it.
 
