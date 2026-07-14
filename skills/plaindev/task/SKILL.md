@@ -107,9 +107,11 @@ After approval, run in order. Report each step in one line as it completes.
 5. **Push.** `git push -u origin <branch>`.
 6. **Open the PR.** `gh pr create --base <base> --head <branch> --title "<summary>" --body "<body>"`. Capture the PR URL. Start the body with a **TL;DR** so a reviewer grasps the change at a glance, then the detailed description:
 
+   The TL;DR must be clear and concise. Use plain, simple words. Assume the reviewer has limited context. One or two short sentences. A reader should understand what the PR does and why on the first read, without opening the diff.
+
    ```
    ## TL;DR
-   One or two sentences: what this PR does and why.
+   One or two short sentences in plain words: what this PR does and why.
 
    ## What changed
    - point per meaningful change
