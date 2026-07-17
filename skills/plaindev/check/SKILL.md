@@ -3,7 +3,7 @@ name: plaindev-check
 description: >
   plaindev check — review GitHub pull requests with gh and return negative-only
   structured criticism in plaindev reply style. Reports bugs, issues, gaps, and
-  sub-optimal code only — no praise or neutral notes. ADHD-friendly ESL output:
+  sub-optimal code only — no praise or neutral notes. Plain, scannable output:
   compact rows with location, what, why, and fix. Use when the user invokes
   /plaindev-check, says "pr check", "check this PR", or asks for PR review on a
   GitHub pull request.
@@ -17,9 +17,9 @@ Open with a short, plain summary of what the PR does (see the Header shape). The
 
 Follow the **plaindev-reply** skill hard rules for prose. This skill adds PR workflow and output shape.
 
-## Write for ESL and ADHD readers
+## Write for fast reading
 
-Assume the reader has limited context and reads English as a second language (ESL). Assume they may have ADHD (attention differences that make dense text hard to scan). Write so they understand on the first read.
+Assume the reader has limited context and little time. Write so they understand on the first read, without going back over it.
 
 - Lead with the point. Put the summary and verdict first, before detail.
 - One idea per sentence. Aim for ~15 words. Split long sentences.

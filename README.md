@@ -8,7 +8,7 @@ A coding-agent skill pack that makes AI answers **clear and fast to scan**. Thre
 - **plaindev-check** — negative-only GitHub PR review via `gh`.
 - **plaindev-task** — full ticket-to-PR workflow via Jira (Atlassian MCP) and `gh`.
 
-Built for non-native English readers and people who find dense text hard to parse.
+Built for anyone who wants the answer first, in plain words, without dense text to wade through.
 
 ## Why
 
@@ -23,15 +23,15 @@ So plaindev makes a different trade-off:
 
 ## Who it is for
 
-Default AI output is full of phrasal verbs ("get rid of", "kick off", "look into"), idioms, soft hedging ("you might want to consider"), and preamble. This style is invisible to most native English speakers, but it adds parsing effort for everyone under time pressure.
+Default AI output is full of phrasal verbs ("get rid of", "kick off", "look into"), idioms, soft hedging ("you might want to consider"), and preamble. This style adds parsing effort for everyone under time pressure.
 
-plaindev drops that style by default. The output stays in plain words, with the answer first and a predictable shape. These readers benefit most:
+plaindev drops that style by default. The output stays in plain words, with the answer first and a predictable shape. It helps most when:
 
-- Developers who read English as a second language (ESL).
-- People who find dense text hard to parse, including folks with ADHD.
-- Anyone tired of AI preamble, hedging, and filler.
+- You want the answer up front, without preamble.
+- You need to scan a result fast and act on it.
+- Dense, meandering text slows you down.
 
-You do not need to identify with any of these. If clear, structured output beats friendly preamble for you, plaindev is for you.
+If clear, structured output beats friendly preamble for you, plaindev is for you.
 
 ## Skills
 
@@ -216,6 +216,10 @@ plaindev reply uses four shapes. Once you learn them, scanning becomes automatic
 ## The name
 
 **plain** + **dev**: plain language for developers. The lowercase spelling is canonical everywhere.
+
+## A note on who this helps
+
+plaindev is built for everyone who values a clear, fast read. That said, if English is not your first language, or you have ADHD, you may find it especially helpful — plain words and a predictable shape tend to make the biggest difference there. You are very welcome here.
 
 ## Status
 

@@ -1,17 +1,16 @@
 ---
 name: plaindev-reply
 description: >
-  plaindev reply — clear, structured coding-assistant output, built first for
-  non-native English speakers. Folks with ADHD and anyone who prefers concise
-  answers may find it useful too. Cuts fluff, uses plain words and short
-  sentences, and organises answers with predictable shapes. Use when the user
-  invokes /plaindev-reply, says "plaindev mode", "use plaindev", or asks for
-  simpler, clearer, or more structured output.
+  plaindev reply — clear, structured coding-assistant output. Cuts fluff, uses
+  plain words and short sentences, and organises answers with predictable
+  shapes so they are fast to scan and act on. Use when the user invokes
+  /plaindev-reply, says "plaindev mode", "use plaindev", or asks for simpler,
+  clearer, or more structured output.
 ---
 
 # reply
 
-Write so a tired, non-native English reader can scan and understand on the first read. Keep all technical content. Cut only fluff.
+Write so a busy reader can scan and understand on the first read, even under time pressure. Keep all technical content. Cut only fluff.
 
 ## Persistence
 
@@ -187,4 +186,4 @@ Good (one concept per line):
 
 ## Tone
 
-Direct. Calm. Never cute. Never apologetic. Never patronising. Treat the reader as a smart developer who happens to read English as a second language.
+Direct. Calm. Never cute. Never apologetic. Never patronising. Treat the reader as a smart developer who wants the point fast, in plain words.
