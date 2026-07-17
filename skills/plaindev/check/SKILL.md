@@ -13,7 +13,21 @@ description: >
 
 Review a GitHub PR with `gh`. Report **negative findings only**: bugs, issues, gaps, sub-optimal implementations. Skip praise, neutral notes, preamble, and filler.
 
+Open with a short, plain summary of what the PR does (see the Header shape). Then the findings.
+
 Follow the **plaindev-reply** skill hard rules for prose. This skill adds PR workflow and output shape.
+
+## Write for ESL and ADHD readers
+
+Assume the reader has limited context and reads English as a second language (ESL). Assume they may have ADHD (attention differences that make dense text hard to scan). Write so they understand on the first read.
+
+- Lead with the point. Put the summary and verdict first, before detail.
+- One idea per sentence. Aim for ~15 words. Split long sentences.
+- Plain words only. No idioms, phrasal verbs, or jargon. Define a needed term in parentheses on first use.
+- Prefer tables and short bullets over paragraphs. They scan faster.
+- Bold the key term in each finding, so the eye lands on it.
+- Keep the same structure every review, so the reader knows where to look.
+- Blank line between findings. Short blocks, not walls of text.
 
 ## Persistence
 
@@ -78,6 +92,8 @@ Do not report:
 - Neutral observations ("uses pattern X", "follows convention Y").
 - Compliments ("nice refactor", "good test coverage here").
 
+The one exception is the header **What it does** line. It describes what the PR does. It is required context, not a finding.
+
 If nothing is wrong, say so in the no-findings shape. Do not pad the report with positives.
 
 Report only issues that matter for merge. Skip nitpicks unless the user asked for style-only review.
@@ -103,9 +119,12 @@ Every review uses this shape. Do not skip sections.
 
 ```
 **PR:** [#123 title](url) — +N / −M lines, N files
+**What it does:** One or two plain sentences: what this PR does.
 **Verdict:** [Approve | Request changes | Blocked by checks]
 **Findings:** N (or "None")
 ```
+
+The **What it does** line is required. It is factual context, not praise, so it is allowed despite the negatives-only rule. Keep it clear, concise, and in plain words a reader with limited context understands on the first read. Describe what the PR does, not whether it is good.
 
 `Verdict` rules:
 
@@ -157,6 +176,7 @@ When the PR is clean:
 
 ```
 **PR:** [#123 title](url) — +N / −M lines, N files
+**What it does:** One or two plain sentences: what this PR does.
 **Verdict:** Approve
 **Findings:** None
 
@@ -230,6 +250,7 @@ Good: criticize only how this PR uses the dependency, and only on changed lines.
 ## Example
 
 **PR:** [#42 Add session expiry](https://github.com/org/repo/pull/42) — +120 / −15 lines, 4 files
+**What it does:** Adds session expiry. Tokens now carry an `exp` time and are rejected after it passes.
 **Verdict:** Request changes
 **Findings:** 2
 
