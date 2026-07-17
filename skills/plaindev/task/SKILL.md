@@ -95,17 +95,15 @@ After approval, run in order. Report each step in one line as it completes.
 1. **Create the issue.** Use the Atlassian MCP create-issue tool. Assign to the current user. Capture the issue key and URL. For a story, create the Story first, then one Sub-task per unit with the story as parent. Run steps 2–8 per sub-task. Capture every key and URL.
 2. **Move to In Progress.** List the issue transitions. Match a target whose name contains "progress" (case-insensitive). If none matches, list the options and ask. Apply the transition.
 3. **Create the branch.** Branch from the freshly fetched base: `git checkout -b <branch> origin/<base>`. This guarantees the branch starts from the latest base. If the branch exists, check it out and continue.
-4. **Do the work and commit.** Make the code changes. Group them into logical units. Commit each unit with a conventional message and the ticket key in the footer:
+4. **Do the work and commit.** Make the code changes. Group them into logical units. Commit each unit with a conventional message in the form `<type>(<TICKET>): <summary>`, where the scope is the Jira ticket key:
 
    ```
-   feat(auth): add session expiry check
-
-   Refs: PROJ-123
+   fix(AT-5180): populate top-level items/totalCount
    ```
 
-   Use `feat`, `fix`, `refactor`, `test`, `docs`, `chore` as the type. One concern per commit.
+   Use `feat`, `fix`, `refactor`, `test`, `docs`, `chore` as the type. One concern per commit. The ticket key in the scope links the commit to Jira, so no separate footer is needed.
 5. **Push.** `git push -u origin <branch>`.
-6. **Open the PR.** `gh pr create --base <base> --head <branch> --title "<summary>" --body "<body>"`. Capture the PR URL. Start the body with a **TL;DR** so a reviewer grasps the change at a glance, then the detailed description:
+6. **Open the PR.** `gh pr create --base <base> --head <branch> --title "<type>(<TICKET>): <summary>" --body "<body>"`. Use the same `<type>(<TICKET>): <summary>` form as the commits, e.g. `fix(AT-5180): populate top-level items/totalCount`. Capture the PR URL. Start the body with a **TL;DR** so a reviewer grasps the change at a glance, then the detailed description:
 
    The TL;DR must be clear and concise. Use plain, simple words. Assume the reviewer has limited context. One or two short sentences. A reader should understand what the PR does and why on the first read, without opening the diff.
 
@@ -211,7 +209,7 @@ Proceed? (yes / edit)
 - Moved PROJ-311 to In Progress
 - Fetched origin/main
 - Branch proj-311-fix-token-expiry-order from origin/main
-- Commit 1: fix(auth): check exp before DB lookup
+- Commit 1: fix(PROJ-311): check exp before DB lookup
 - Pushed proj-311-fix-token-expiry-order
 - Opened PR #52 — https://github.com/org/repo/pull/52
 - Linked PR to PROJ-311
@@ -220,4 +218,4 @@ Proceed? (yes / edit)
 **Ticket:** [PROJ-311 Fix token expiry check order](https://org.atlassian.net/browse/PROJ-311) — In Review
 **Branch:** proj-311-fix-token-expiry-order
 **Commits:** 1
-**PR:** [#52 Fix token expiry check order](https://github.com/org/repo/pull/52) — Open
+**PR:** [#52 fix(PROJ-311): fix token expiry check order](https://github.com/org/repo/pull/52) — Open
