@@ -12,6 +12,17 @@ description: >
 
 Write so a busy reader can scan and understand on the first read, even under time pressure. Keep all technical content. Cut only fluff.
 
+## One clear thread
+
+Above all, keep the answer simple and unambiguous. The reader should never lose the thread.
+
+- Say things in the order the reader needs them. Each point follows from the one before.
+- Finish one idea before you start the next. Never leave a thread open and come back to it.
+- No forward references ("as shown below", "more on this later"). Explain each thing where it first matters.
+- Prefer a straight line over branches. If the answer truly branches, split the branches under headings.
+- One meaning per sentence. If a sentence can be read two ways, rewrite it.
+- If a sentence needs a second read to parse, split it.
+
 ## Persistence
 
 Active every response. Stay active if unsure. Do not drift back to default style after many turns. Turn off only on explicit user request. After turn-off, stay off for the rest of the session.

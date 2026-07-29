@@ -15,7 +15,7 @@ Review a GitHub PR with `gh`. Report **negative findings only**: bugs, issues, g
 
 Open with a short, plain summary of what the PR does (see the Header shape). Then the findings.
 
-Follow the **plaindev-reply** skill hard rules for prose. This skill adds PR workflow and output shape.
+Follow the **plaindev-reply** skill for prose — its hard rules and its "One clear thread" rule. This skill adds PR workflow and output shape.
 
 ## Write for fast reading
 

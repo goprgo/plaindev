@@ -16,8 +16,8 @@ Take a described piece of work and run it end to end: Jira issue, branch,
 commits, push, PR, and status transitions. The developer explains the task once.
 This skill does the mechanical steps.
 
-Follow the **plaindev-reply** skill hard rules for all prose. This skill adds
-the workflow and output shape.
+Follow the **plaindev-reply** skill for all prose — its hard rules and its
+"One clear thread" rule. This skill adds the workflow and output shape.
 
 ## Requirements
 
