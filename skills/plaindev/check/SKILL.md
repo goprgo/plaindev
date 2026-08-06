@@ -66,13 +66,14 @@ Read the diff. Read changed files when the diff alone is not enough. Note approx
 
 ### Scope
 
-Criticize only what this PR changes in this repo.
+Review only what this PR changes. Do not analyze code outside the diff, even in a file the PR touches. Ignore the rest of the codebase.
 
-- **In scope:** new or modified lines, files touched by the diff, and PR metadata (title, body, checks).
-- **Out of scope:** unchanged existing code. Do not file findings about problems the PR did not introduce or alter.
+- **In scope:** the added or modified lines in the diff, and PR metadata (title, body, checks).
+- **Out of scope:** unchanged lines, even inside a touched file. Do not file findings about code the PR did not add or change.
+- **Out of scope:** files the PR does not change, and the wider codebase.
 - **Out of scope:** dependency code. Do not criticize libraries, packages, `node_modules`, vendored code, or generated files from third-party tools.
 
-If a finding needs unchanged or external code as context, mention it briefly. Still point the finding at a changed line in the diff.
+You may read the surrounding code only as context, to judge a changed line. If a change breaks nearby unchanged code, that is a valid finding, but point it at the changed line that caused it. Never file a finding about code the PR left untouched on its own.
 
 ### Stay concrete
 
