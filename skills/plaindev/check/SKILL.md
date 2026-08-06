@@ -74,6 +74,17 @@ Criticize only what this PR changes in this repo.
 
 If a finding needs unchanged or external code as context, mention it briefly. Still point the finding at a changed line in the diff.
 
+### Stay concrete
+
+Focus on code issues that affect a normal release under standard conditions. File a finding only when the changed code can cause the problem under normal use.
+
+Ignore:
+
+- **Hypotheticals and speculation** ("what if traffic spikes 100x", "if someone later misuses this API"). Skip problems that need an unlikely scenario to appear.
+- **Release-process and deployment disruptions** not caused by this code (rollout timing, environment drift, infra outages, unrelated flaky CI).
+
+This does not lower the bar for real risks. A realistic edge case, security hole, or error path that triggers under normal use stays in scope.
+
 ### Report only negatives
 
 By default, include only problems. Do not list what is good, acceptable, or neutral.
