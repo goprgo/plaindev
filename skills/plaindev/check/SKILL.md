@@ -4,7 +4,7 @@ description: >
   plaindev check — review GitHub pull requests with gh and return negative-only
   structured criticism in plaindev reply style. Reports bugs, issues, gaps, and
   sub-optimal code only — no praise or neutral notes. Plain, scannable output:
-  compact rows with location, what, why, and fix. Use when the user invokes
+  compact rows with severity, location, what, why, and fix. Use when the user invokes
   /plaindev-check, says "pr check", "check this PR", or asks for PR review on a
   GitHub pull request.
 ---
@@ -26,6 +26,7 @@ Assume the reader has limited context and little time. Write so they understand 
 - Plain words only. No idioms, phrasal verbs, or jargon. Define a needed term in parentheses on first use.
 - Prefer tables and short bullets over paragraphs. They scan faster.
 - Bold the key term in each finding, so the eye lands on it.
+- Label every finding with a severity, so the reader sees the worst items first.
 - Keep the same structure every review, so the reader knows where to look.
 - Blank line between findings. Short blocks, not walls of text.
 
@@ -121,7 +122,7 @@ Check, in priority order:
 7. Maintainability: unclear names, duplication, dead code.
 8. PR hygiene: scope creep, missing description, failing checks.
 
-Sort findings by severity. Put blockers first.
+Sort findings by severity. Put blockers first. Label each finding with its severity level (see Severity).
 
 ## Output shape
 
@@ -133,8 +134,10 @@ Every review uses this shape. Do not skip sections.
 **PR:** [#123 title](url) — +N / −M lines, N files
 **What it does:** One or two plain sentences: what this PR does.
 **Verdict:** [Approve | Request changes | Blocked by checks]
-**Findings:** N (or "None")
+**Findings:** N — N blockers, N serious, N minor (or "None")
 ```
+
+The **Findings** line counts findings by severity. List only the levels present. Write `None` when there are no findings.
 
 The **What it does** line is required. It is factual context, not praise, so it is allowed despite the negatives-only rule. Keep it clear, concise, and in plain words a reader with limited context understands on the first read. Describe what the PR does, not whether it is good.
 
@@ -148,9 +151,15 @@ The **What it does** line is required. It is factual context, not praise, so it 
 
 One row per finding. Always include this table, even for 1 finding.
 
-| # | Location | Summary |
-|---|----------|---------|
-| 1 | `path/to/file.ts:~42` | Short preview of the issue |
+| # | Severity | Location | Summary |
+|---|----------|----------|---------|
+| 1 | Blocker | `path/to/file.ts:~42` | Short preview of the issue |
+
+Severity column rules:
+
+- Use one word: `Blocker`, `Serious`, or `Minor`. No other words in the cell.
+- Every row needs a severity. Never leave it blank.
+- Rows stay sorted: all blockers, then serious, then minor.
 
 Location rules:
 
@@ -167,6 +176,7 @@ One block per table row. Index must match the table.
 ```
 ### 1. Short preview — `path/to/file.ts:~42`
 
+**Severity:** Blocker — one short clause on why it sits at this level.
 **What:** One or two sentences. State the problem plainly.
 **Why it matters:** One or two sentences. State the risk or cost.
 **Solution:** Concrete fix. Code snippet only when it helps.
@@ -176,6 +186,7 @@ One block per table row. Index must match the table.
 Rules for detail blocks:
 
 - **Short preview** in the heading must match the Summary column.
+- **Severity** is required. It must match the table row. Add one short clause naming the reason for the level.
 - **What** and **Why it matters** are required.
 - **Solution** is required when a fix exists. Write "No code change needed" for process-only issues.
 - **Alternative approach** is optional. Include only when a real trade-off exists.
@@ -197,15 +208,24 @@ No material issues found.
 
 Still mention failing checks or missing tests if those exist. They are findings.
 
-## Severity (internal only)
+## Severity
 
-Use severity to sort. Do not add a Severity column unless the user asks.
+Severity is part of the output. Show it in the Summary table and in each detail block.
 
-| Level | Examples |
-|-------|----------|
-| Blocker | Bug, security hole, broken build, data loss |
-| Serious | Missing tests for risky change, silent failure |
-| Minor | Naming, small refactor, optional polish |
+Use three levels only. Pick the highest level that fits.
+
+| Level | Meaning | Examples |
+|-------|---------|----------|
+| Blocker | Must fix before merge. Breaks correctness, safety, or the build. | Bug, security hole, broken build, data loss, breaking API change with no migration |
+| Serious | Should fix before merge. Real risk, but the PR still works. | Missing tests for a risky change, silent failure, unhandled error path, performance regression on a hot path |
+| Minor | Can fix later. No behaviour risk. | Naming, duplication, dead code, small refactor, PR hygiene |
+
+Rules:
+
+- Judge severity by the worst realistic outcome under normal use, not by how hard the fix is.
+- Do not invent extra levels ("critical", "nit", "medium"). Three levels only.
+- When a finding sits between two levels, pick the lower one and say why in the **Severity** clause.
+- Severity drives the verdict: any blocker means **Request changes**. Failing required checks means **Blocked by checks**.
 
 ## gh failure handling
 
@@ -259,26 +279,36 @@ Bad: criticizing a third-party package API or `node_modules` implementation.
 
 Good: criticize only how this PR uses the dependency, and only on changed lines.
 
+Bad: finding with no severity, or a made-up level — "Severity: nit".
+
+Good: `Blocker`, `Serious`, or `Minor`, in both the table and the detail block.
+
+Bad: minor findings listed above blockers.
+
+Good: sort by severity, blockers first.
+
 ## Example
 
 **PR:** [#42 Add session expiry](https://github.com/org/repo/pull/42) — +120 / −15 lines, 4 files
 **What it does:** Adds session expiry. Tokens now carry an `exp` time and are rejected after it passes.
 **Verdict:** Request changes
-**Findings:** 2
+**Findings:** 2 — 1 blocker, 1 serious
 
-| # | Location | Summary |
-|---|----------|---------|
-| 1 | `src/auth/session.ts:~42` | Token expiry is not checked before DB lookup |
-| 2 | `src/auth/session.test.ts` | No test for expired token path |
+| # | Severity | Location | Summary |
+|---|----------|----------|---------|
+| 1 | Blocker | `src/auth/session.ts:~42` | Token expiry is not checked before DB lookup |
+| 2 | Serious | `src/auth/session.test.ts` | No test for expired token path |
 
 ### 1. Token expiry not checked — `src/auth/session.ts:~42`
 
+**Severity:** Blocker — expired sessions can pass validation.
 **What:** `validateSession` reads the DB before checking `exp`.
 **Why it matters:** Expired tokens still hit the DB. Stale sessions may pass.
 **Solution:** Compare `exp` to `Date.now()` first. Return early when expired.
 
 ### 2. Missing test for expired token — `src/auth/session.test.ts`
 
+**Severity:** Serious — expiry logic ships untested, but current behaviour is correct.
 **What:** Tests cover valid tokens only. Expired path is untested.
 **Why it matters:** Regressions in expiry logic will ship silently.
 **Solution:** Add a test that passes an expired token and expects 401.
