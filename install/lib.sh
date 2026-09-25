@@ -8,7 +8,7 @@
 
 set -euo pipefail
 
-PLAIN_DEV_SKILLS=(reply check task layman)
+PLAIN_DEV_SKILLS=(reply check task layman maintain)
 
 plaindev_skill_src() {
   local repo_root="$1"
@@ -86,6 +86,7 @@ Skills installed at \`$skills_parent/\`. Read and apply one when the user invoke
 - **plaindev-check** (\`$skills_parent/plaindev-check/SKILL.md\`) — negative-only PR review. Invoke: \`/plaindev-check\` or "check this PR".
 - **plaindev-task** (\`$skills_parent/plaindev-task/SKILL.md\`) — ticket → branch → PR workflow (Jira + gh). Invoke: \`/plaindev-task\` or "run the task workflow".
 - **plaindev-layman** (\`$skills_parent/plaindev-layman/SKILL.md\`) — explain jargon in a ticket, doc, or message in plain words. Invoke: \`/plaindev-layman\` or "break down the terms".
+- **plaindev-maintain** (\`$skills_parent/plaindev-maintain/SKILL.md\`) — work through PR review comments: fix, reply, resolve, re-request review (gh). Invoke: \`/plaindev-maintain\` or "address the PR comments".
 <!-- plaindev-end -->
 EOF
 )"

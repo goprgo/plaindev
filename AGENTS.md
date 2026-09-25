@@ -41,3 +41,5 @@ PR reviews: invoke **plaindev check** — [skills/plaindev/check/SKILL.md](./ski
 Ticket-to-PR workflow: invoke **plaindev task** — [skills/plaindev/task/SKILL.md](./skills/plaindev/task/SKILL.md).
 
 Jargon breakdown for a ticket, doc, or message: invoke **plaindev layman** — [skills/plaindev/layman/SKILL.md](./skills/plaindev/layman/SKILL.md).
+
+PR review comments (fix, reply, resolve, re-review): invoke **plaindev maintain** — [skills/plaindev/maintain/SKILL.md](./skills/plaindev/maintain/SKILL.md).
