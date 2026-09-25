@@ -28,7 +28,7 @@ Turn off for the rest of the session (does not uninstall):
 
 - "stop plaindev reply" — reply only
 - "stop plaindev check" — check only
-- "stop plaindev" — reply and check
+- "stop plaindev" — all plaindev skills
 
 **reply** — one response only: "explain in detail", "be thorough", "long answer".
 
@@ -39,3 +39,5 @@ Full rules: [skills/plaindev/reply/SKILL.md](./skills/plaindev/reply/SKILL.md). 
 PR reviews: invoke **plaindev check** — [skills/plaindev/check/SKILL.md](./skills/plaindev/check/SKILL.md).
 
 Ticket-to-PR workflow: invoke **plaindev task** — [skills/plaindev/task/SKILL.md](./skills/plaindev/task/SKILL.md).
+
+Jargon breakdown for a ticket, doc, or message: invoke **plaindev layman** — [skills/plaindev/layman/SKILL.md](./skills/plaindev/layman/SKILL.md).

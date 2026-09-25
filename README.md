@@ -2,11 +2,12 @@
 
 > Inspired by Caveman's no-fluff discipline, tuned for easy reading.
 
-A coding-agent skill pack that makes AI answers **clear and fast to scan**. Three skills ship together:
+A coding-agent skill pack that makes AI answers **clear and fast to scan**. Four skills ship together:
 
 - **plaindev-reply** — structured answers for everyday software work.
 - **plaindev-check** — negative-only GitHub PR review via `gh`.
 - **plaindev-task** — full ticket-to-PR workflow via Jira (Atlassian MCP) and `gh`.
+- **plaindev-layman** — plain-word breakdown of every hard term in a ticket, doc, or message.
 
 Built for anyone who wants the answer first, in plain words, without dense text to wade through.
 
@@ -40,12 +41,16 @@ If clear, structured output beats friendly preamble for you, plaindev is for you
 | **plaindev-reply** | Clear, structured assistant output | `/plaindev-reply`, "use plaindev" |
 | **plaindev-check** | Negative-only PR review with `gh` | `/plaindev-check`, "check this PR" |
 | **plaindev-task** | Ticket → branch → commits → PR (Jira + `gh`) | `/plaindev-task`, "run the task workflow" |
+| **plaindev-layman** | Explain jargon in a ticket, doc, or message for a layman | `/plaindev-layman`, "break down the terms" |
 
 Full rules:
 
 - [skills/plaindev/reply/SKILL.md](./skills/plaindev/reply/SKILL.md)
 - [skills/plaindev/check/SKILL.md](./skills/plaindev/check/SKILL.md)
 - [skills/plaindev/task/SKILL.md](./skills/plaindev/task/SKILL.md)
+- [skills/plaindev/layman/SKILL.md](./skills/plaindev/layman/SKILL.md)
+
+**plaindev-layman sources:** pasted text works with no setup. For links, connect the matching MCP connector: Atlassian (Jira, Confluence), Notion, or Slack.
 
 **plaindev-task requirements:** the [Atlassian MCP connector](https://claude.ai) authorized for Jira, and the `gh` CLI authenticated (`gh auth login`). Set a default Jira project with `PLAINDEV_JIRA_PROJECT` (env var) or a `.plaindev/config` line `PLAINDEV_JIRA_PROJECT=KEY`.
 
@@ -88,8 +93,8 @@ curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/install/cursor
 
 Install paths:
 
-- Global: `~/.cursor/skills/plaindev-reply/`, `~/.cursor/skills/plaindev-check/`, `~/.cursor/skills/plaindev-task/`
-- Local (`--always-on`): `.cursor/skills/plaindev-reply/`, `.cursor/skills/plaindev-check/`, `.cursor/skills/plaindev-task/`, `.cursor/rules/plaindev-reply.mdc`
+- Global: `~/.cursor/skills/plaindev-reply/`, `~/.cursor/skills/plaindev-check/`, `~/.cursor/skills/plaindev-task/`, `~/.cursor/skills/plaindev-layman/`
+- Local (`--always-on`): `.cursor/skills/plaindev-reply/`, `.cursor/skills/plaindev-check/`, `.cursor/skills/plaindev-task/`, `.cursor/skills/plaindev-layman/`, `.cursor/rules/plaindev-reply.mdc`
 
 ### Claude Code
 
@@ -107,8 +112,8 @@ curl -fsSL https://raw.githubusercontent.com/goprgo/plaindev/main/install/claude
 
 Install paths:
 
-- Global: `~/.claude/skills/plaindev-reply/`, `~/.claude/skills/plaindev-check/`, `~/.claude/skills/plaindev-task/`
-- Local (`--always-on`): `.claude/skills/plaindev-reply/`, `.claude/skills/plaindev-check/`, `.claude/skills/plaindev-task/`, `AGENTS.md` block
+- Global: `~/.claude/skills/plaindev-reply/`, `~/.claude/skills/plaindev-check/`, `~/.claude/skills/plaindev-task/`, `~/.claude/skills/plaindev-layman/`
+- Local (`--always-on`): `.claude/skills/plaindev-reply/`, `.claude/skills/plaindev-check/`, `.claude/skills/plaindev-task/`, `.claude/skills/plaindev-layman/`, `AGENTS.md` block
 
 ### Install everything at once
 
@@ -189,6 +194,12 @@ To turn a skill off in any session, use its turn-off phrase. This does not unins
 - Turn on: `/plaindev-task`, "run the task workflow", "ticket to PR"
 - Turn off (session): "stop plaindev task", "stop plaindev"
 - Scope one run: "no ticket", "ticket only", "draft PR", "skip review"
+
+**layman**
+
+- Turn on: `/plaindev-layman`, "break down the terms", "explain like I'm a layman"
+- Turn off (session): "stop plaindev layman", "stop plaindev"
+- This response only: "terms only", "explain X too", "go deeper on X"
 
 **all**
 

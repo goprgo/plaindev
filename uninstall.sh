@@ -3,9 +3,9 @@
 #
 # Removes global plaindev skills only. Does not touch repo-local files.
 # To remove local installs, delete these yourself:
-#   .cursor/skills/plaindev-reply/, .cursor/skills/plaindev-check/, .cursor/skills/plaindev-task/
+#   .cursor/skills/plaindev-reply/, .cursor/skills/plaindev-check/, .cursor/skills/plaindev-task/, .cursor/skills/plaindev-layman/
 #   .cursor/rules/plaindev-reply.mdc
-#   .claude/skills/plaindev-reply/, .claude/skills/plaindev-check/, .claude/skills/plaindev-task/
+#   .claude/skills/plaindev-reply/, .claude/skills/plaindev-check/, .claude/skills/plaindev-task/, .claude/skills/plaindev-layman/
 #   AGENTS.md plaindev block (between <!-- plaindev-begin --> and <!-- plaindev-end -->)
 #
 # Usage:
@@ -54,6 +54,7 @@ plaindev_remove_from() {
   plaindev_remove_tree "$skills_parent/plaindev-reply"
   plaindev_remove_tree "$skills_parent/plaindev-check"
   plaindev_remove_tree "$skills_parent/plaindev-task"
+  plaindev_remove_tree "$skills_parent/plaindev-layman"
   [[ -e "$skills_parent/plaindev" ]] && plaindev_remove_tree "$skills_parent/plaindev"
   return 0
 }
