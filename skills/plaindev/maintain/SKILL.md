@@ -76,15 +76,20 @@ query($owner:String!,$repo:String!,$pr:Int!){
 }'
 ```
 
-**Review summaries** (the text a reviewer writes when they submit a review): `latestReviews` from the preflight call. Keep only those with a non-empty body.
+**Review summaries** (the text a reviewer writes when they submit a review): `gh api repos/<owner>/<repo>/pulls/<number>/reviews --paginate`. Keep only those with a non-empty `body`. Use `html_url` as the link.
 
-**Top-level comments** (the PR conversation tab): `gh pr view <pr> --json comments`.
+**Top-level comments** (the PR conversation tab): `gh pr view <pr> --json comments`. Use `url` as the link.
+
+Review summaries and top-level comments have no resolve button. This skill calls them **unresolvable feedback**.
+
+GitHub state is the only memory between runs. Do not keep a local state file. The filters below decide what is still open.
 
 Then filter:
 
 - **Skip** resolved threads.
 - **Skip** comments by you.
 - **Skip** threads where the last comment is yours. You already answered. The reviewer has not replied yet.
+- **Skip** unresolvable feedback if a later top-level comment by you contains its link. You already answered it.
 - **Skip** top-level comments with no request or question (thanks, CI links, bot status reports).
 - **Keep** outdated threads (`isOutdated`), but check whether the current code already fixes them.
 - **Mark** bot authors (`__typename` is `Bot`, or the login ends in `[bot]`). Treat their comments the same way. Never tag or re-request review from a bot.
@@ -167,7 +172,18 @@ mutation($id:ID!){
 }' -f id=<thread-id>
 ```
 
-Review summaries and top-level comments cannot be resolved or threaded. Answer them with 1 PR comment (`gh pr comment <pr> --body-file reply.md`). Start with a short quote of the original line and a link to it. Group several answers to the same reviewer into 1 comment.
+Reply to unresolvable feedback with 1 top-level comment per item:
+
+```bash
+gh pr comment <pr> --body-file reply.md
+```
+
+Start the reply with a short quote of the original and its link. The link marks the item as answered for the next run.
+
+Unresolvable feedback follows the same decisions below, with 2 differences:
+
+- Skip every "Resolve" step. There is no resolve button.
+- Always reply, also for **Agree**. The reply is the only sign that the item is handled.
 
 ### Agree
 
@@ -228,7 +244,7 @@ Report each step in 1 line as it completes. End with this summary. Use real clic
 |---|---|---|---|
 | 1 | @anna | Agree | Fixed in a1b2c3d · resolved |
 | 2 | @anna | Agree | Fixed in e4f5a6b · resolved |
-| 3 | @ben | Disagree | [Replied](url) · resolved |
+| 3 | @ben | Disagree | [Replied](url) · no resolve button |
 | 4 | @ben | Better idea | [Proposed LRU](url) · open |
 | 5 | @coderabbitai[bot] | Already done | [Replied](url) · resolved |
 
