@@ -213,6 +213,17 @@ Unresolvable feedback follows the same decisions below, with 2 differences:
    - A clear question at the end: "OK to go with this?"
 2. Leave the thread open. Resolve only if the user says so.
 
+### Bot and reviewer-tool threads
+
+Resolve a thread after its fix is pushed, whoever wrote it, bots included. A
+bot's footer about resolving ("resolving waives this finding", "the bot reopens
+threads that others resolve") covers waiving a finding that is still in the
+code. It does not apply to a fixed finding, so it is no reason to leave a fixed
+thread open. If the bot reopens a thread after a fix, report that in the
+summary. Do not resolve it again.
+
+Leave a thread open only for **Better idea**, or when the user asks.
+
 ## Request re-review
 
 After the replies, request review again from each human who asked for a change that you made:
