@@ -57,7 +57,7 @@ Full rules:
 
 **plaindev-task requirements:** the [Atlassian MCP connector](https://claude.ai) authorized for Jira, and the `gh` CLI authenticated (`gh auth login`). Set a default Jira project with `PLAINDEV_JIRA_PROJECT` (env var) or a `.plaindev/config` line `PLAINDEV_JIRA_PROJECT=KEY`.
 
-**plaindev-maintain requirements:** the `gh` CLI authenticated (`gh auth login`), run from the repo root. You need push access to the PR branch.
+**plaindev-maintain requirements:** the `gh` CLI authenticated (`gh auth login`), run from the repo root. You need push access to the PR branch. To check comments against a Jira ticket, the Atlassian connector must be authorized. Without it, maintain asks for a spec link or triages without one.
 
 ## Before / after
 
