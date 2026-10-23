@@ -86,7 +86,7 @@ Skills installed at \`$skills_parent/\`. Read and apply one when the user invoke
 - **plaindev-check** (\`$skills_parent/plaindev-check/SKILL.md\`) — negative-only PR review. Invoke: \`/plaindev-check\` or "check this PR".
 - **plaindev-task** (\`$skills_parent/plaindev-task/SKILL.md\`) — ticket → branch → PR workflow (Jira + gh). Invoke: \`/plaindev-task\` or "run the task workflow".
 - **plaindev-layman** (\`$skills_parent/plaindev-layman/SKILL.md\`) — explain jargon in a ticket, doc, or message in plain words. Invoke: \`/plaindev-layman\` or "break down the terms".
-- **plaindev-explain** (\`$skills_parent/plaindev-explain/SKILL.md\`) — full story behind a ticket, doc, or link: what to do, similar work, gaps. Invoke: \`/plaindev-explain\` or "explain this ticket".
+- **plaindev-explain** (\`$skills_parent/plaindev-explain/SKILL.md\`) — plain-word overview of a ticket, doc, or link and its related resources. Invoke: \`/plaindev-explain\` or "explain this ticket".
 - **plaindev-maintain** (\`$skills_parent/plaindev-maintain/SKILL.md\`) — work through PR review comments: fix, reply, resolve, re-request review (gh). Invoke: \`/plaindev-maintain\` or "address the PR comments".
 <!-- plaindev-end -->
 EOF

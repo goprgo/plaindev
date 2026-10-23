@@ -42,6 +42,6 @@ Ticket-to-PR workflow: invoke **plaindev task** — [skills/plaindev/task/SKILL.
 
 Jargon breakdown for a ticket, doc, or message: invoke **plaindev layman** — [skills/plaindev/layman/SKILL.md](./skills/plaindev/layman/SKILL.md).
 
-Full story behind a ticket, doc, or link (tasks, similar work, gaps): invoke **plaindev explain** — [skills/plaindev/explain/SKILL.md](./skills/plaindev/explain/SKILL.md).
+Plain-word overview of a ticket, doc, or link and its related resources: invoke **plaindev explain** — [skills/plaindev/explain/SKILL.md](./skills/plaindev/explain/SKILL.md).
 
 PR review comments (fix, reply, resolve, re-review): invoke **plaindev maintain** — [skills/plaindev/maintain/SKILL.md](./skills/plaindev/maintain/SKILL.md).
